@@ -2,8 +2,15 @@
 import Todo from './Todo/Todo';
 import Inprogress from './Inprogress/Inprogress';
 import Done from './Done/Done';
+import { useEffect, useState } from 'react';
 
 const List = () => {
+    const [data, setData] = useState([]);
+    console.log(data)
+    useEffect(() => {
+        const savedData = JSON.parse(localStorage.getItem('task')) || [];
+        setData(savedData);
+      }, []);
     return (
         <div >
             <h2 className='text-center mt-6 mb-4 text-4xl text-base-600 font-semibold'>Task List</h2>
