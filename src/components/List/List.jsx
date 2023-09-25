@@ -5,12 +5,25 @@ import Done from './Done/Done';
 import { useEffect, useState } from 'react';
 
 const List = () => {
-    const [data, setData] = useState([]);
-    console.log(data)
+    
+    const [tasks, setTasks] = useState([]);
+
     useEffect(() => {
-        const savedData = JSON.parse(localStorage.getItem('task')) || [];
-        setData(savedData);
-      }, []);
+      
+        const storedData = JSON.parse(localStorage.getItem('myData'))||[];
+        setTasks(storedData);
+    }, []);
+
+    console.log(tasks)
+
+    const taskFilters = tasks.filter((task) => task != null);
+    const taskTodo = taskFilters.filter((task) => task.status == "to-do");
+    const taskInprogess = taskFilters.filter((task) => task.status == "in-progress");
+    const taskDone = taskFilters.filter((task) => task.status == "done");
+    // console.log(taskFilters)
+    // console.log(taskTodo)
+    // console.log(taskInprogess)
+    // console.log(taskDone)
     return (
         <div >
             <h2 className='text-center mt-6 mb-4 text-4xl text-base-600 font-semibold'>Task List</h2>
@@ -18,13 +31,13 @@ const List = () => {
             <div className="lg:flex lg:justify-center lg:items-center bg-blue-300 my-3">
 
                 <div className='flex justify-center items-center'>
-                    <Todo></Todo>
+                    <Todo taskTodo={taskTodo}></Todo>
                 </div>
                 <div className='flex justify-center items-center'>
-                    <Inprogress />
+                    <Inprogress taskInprogess ={taskInprogess}/>
                 </div>
                 <div className='flex justify-center items-center'>
-                    <Done></Done>
+                    <Done taskDone = {taskDone}></Done>
                 </div>
             </div>
         </div>

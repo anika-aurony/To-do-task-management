@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -8,6 +8,16 @@ const CreateList = () => {
     const [selectedEndDate, setSelectedEndDate] = useState(null);
     const [status, setStatus] = useState(null);
     const [assigned, setAssigned] = useState(null);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+      
+        const storedData = JSON.parse(localStorage.getItem('myData'))||[];
+        setData(storedData);
+    }, []);
+    console.log(data)
+  
+
 
     const postTask = (event) => {
         event.preventDefault();
@@ -20,10 +30,24 @@ const CreateList = () => {
         const status = form.status.value
         const assigned = form.assigned.value
         const attachment = form.attachment.value
-        const task = {title: title, description, priority, startDate, endDate, status, assigned, attachment} 
-        console.log(title, description, priority, startDate, endDate, status, assigned, attachment)
-        localStorage.setItem(task, JSON.stringify(task))
+        const id = data.length++;
+        const task = {id, title: title, description, priority, startDate, endDate, status, assigned, attachment }
+        // console.log(title, description, priority, startDate, endDate, status, assigned, attachment)
+        
+        const newData = [...data, task];
+        setData(newData);
+        console.log(newData)
+        addTask(newData)
     }
+
+    const addTask = data =>{
+        console.log(data)
+        
+
+            localStorage.setItem('myData', JSON.stringify(data));
+        
+    }
+
     return (
         <div className='text-center mt-10 mb-4'>
 
